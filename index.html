@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#020b15">
+<meta name="description" content="Nexo XR Lab: laboratorio inmersivo educativo para explorar modelos 3D, realidad aumentada, realidad virtual y mediación pedagógica.">
+<title>Nexo XR Lab — Aula inmersiva</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.1.0/model-viewer.min.js"></script>
+<script src="https://aframe.io/releases/1.8.0/aframe.min.js"></script>
+<style>
+:root{--bg:#080808;--panel:#151515;--panel2:#202020;--blue:#d7d7d7;--green:#f0f0f0;--orange:#bdbdbd;--white:#f7f7f7;--muted:#a5a5a5;--line:rgba(255,255,255,.14);--shadow:0 18px 55px rgba(0,0,0,.48)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 50% -10%,#303030 0,transparent 42%),var(--bg);color:var(--white);font-family:Inter,system-ui,sans-serif;min-height:100vh}body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.18;background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(to bottom,black,transparent 85%);z-index:-1}button,input,select,textarea{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--green);outline-offset:3px}button:disabled{opacity:.45;cursor:not-allowed}.topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px clamp(14px,3vw,36px);border-bottom:1px solid var(--line);background:rgba(2,11,21,.82);backdrop-filter:blur(18px);position:sticky;top:0;z-index:20}.brand{display:flex;align-items:center;gap:13px;min-width:0}.logo{width:45px;height:45px;flex:none}.brand h1{font-size:clamp(16px,2vw,22px);margin:0;letter-spacing:.04em}.brand p{margin:4px 0 0;color:var(--muted);font-size:11px;letter-spacing:.06em}.top-actions,.status-list{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.status{font-size:11px;border:1px solid var(--line);border-radius:99px;padding:7px 10px;color:var(--muted);white-space:nowrap}.status i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:6px;box-shadow:0 0 9px var(--green)}.btn{border:1px solid var(--line);border-radius:10px;padding:10px 13px;color:var(--white);background:rgba(13,39,58,.86);font-weight:650;font-size:12px;transition:.2s;display:inline-flex;align-items:center;justify-content:center;gap:7px}.btn:hover{border-color:var(--blue);transform:translateY(-1px);box-shadow:0 6px 22px rgba(255,255,255,.07)}.btn.primary{background:linear-gradient(135deg,#f0f0f0,#9a9a9a);border-color:#b1a8ff;color:#080808}.btn.green{background:linear-gradient(135deg,#ededed,#858585);color:#080808;border-color:var(--green)}.btn.orange{background:linear-gradient(135deg,#d9d9d9,#777777);color:#080808;border-color:var(--orange)}.btn.ghost{background:transparent}.btn.small{padding:7px 9px;font-size:11px}.layout{display:grid;grid-template-columns:minmax(235px,280px) minmax(380px,1fr) minmax(270px,330px);gap:16px;padding:18px clamp(12px,2vw,28px) 30px;max-width:1800px;margin:auto;align-items:start}.panel{background:linear-gradient(155deg,rgba(10,32,50,.94),rgba(4,18,31,.94));border:1px solid var(--line);border-radius:17px;box-shadow:var(--shadow);overflow:hidden;min-width:0}.panel-head{padding:17px 17px 13px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}.panel-head h2{font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin:0}.eyebrow{font-size:10px;color:var(--blue);letter-spacing:.16em;text-transform:uppercase;font-weight:800}.panel-body{padding:15px}.muted{color:var(--muted)}.tiny{font-size:11px;line-height:1.55;color:var(--muted)}.dropzone{border:1px dashed rgba(0,183,255,.5);border-radius:13px;padding:20px 12px;text-align:center;background:rgba(255,255,255,.035);transition:.2s}.dropzone.dragover{background:rgba(0,183,255,.14);border-color:var(--green)}.dropzone .upload-icon{font-size:25px;color:var(--blue);margin-bottom:8px}.dropzone strong{font-size:12px;display:block}.dropzone p{font-size:10px;color:var(--muted);line-height:1.5;margin:7px 0 12px}.field{display:grid;gap:6px;margin:12px 0}.field label{font-size:11px;color:#d7e8f2;font-weight:650}.field input,.field select,.field textarea,.url-row input{width:100%;min-width:0;border:1px solid var(--line);border-radius:9px;background:#04111e;color:var(--white);padding:10px;font-size:12px}.field textarea{resize:vertical;min-height:72px}.field input::placeholder,.field textarea::placeholder,.url-row input::placeholder{color:#6d8da2}.url-row{display:flex;gap:6px}.url-row input{flex:1}.section-label{display:flex;justify-content:space-between;align-items:center;margin:19px 0 10px;font-size:10px;letter-spacing:.13em;color:var(--muted);text-transform:uppercase}.count{border-radius:7px;background:rgba(255,255,255,.07);padding:4px 7px;color:var(--blue)}.model-list{display:grid;gap:8px}.model-card{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-radius:11px;background:rgba(2,11,21,.45);cursor:pointer;min-width:0}.model-card.active{border-color:var(--blue);background:rgba(0,183,255,.09);box-shadow:inset 3px 0 var(--blue)}.model-thumb{width:39px;height:39px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,#444,#171717);color:var(--blue);font-size:19px;flex:none}.model-meta{min-width:0;flex:1}.model-meta strong{font-size:11px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.model-meta span{font-size:9px;color:var(--muted);display:block;margin-top:4px}.model-delete{border:0;background:transparent;color:#7897a9;padding:5px;font-size:15px}.model-delete:hover{color:#ff8068}.viewer-panel{min-height:650px}.viewer-head{display:flex;justify-content:space-between;align-items:center;padding:17px 19px;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line)}.viewer-head h2{margin:4px 0 0;font-size:18px}.mode-tabs,.subtabs{display:flex;gap:5px;background:#03111d;padding:4px;border:1px solid var(--line);border-radius:11px}.mode-tabs button,.subtabs button{border:0;background:transparent;color:var(--muted);padding:9px 11px;border-radius:8px;font-size:11px;font-weight:750}.mode-tabs button.active,.subtabs button.active{background:rgba(255,255,255,.12);color:var(--white);box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}.viewer-stage{position:relative;margin:14px;border:1px solid rgba(255,255,255,.15);border-radius:14px;overflow:hidden;background:radial-gradient(ellipse at 50% 65%,rgba(180,180,180,.12),transparent 48%),linear-gradient(145deg,#222,#080808);height:450px}.viewer-stage:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(transparent 75%,rgba(255,255,255,.035)),repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,.05) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,.05) 40px)}model-viewer{width:100%;height:100%;background:transparent;--poster-color:transparent;--progress-bar-color:var(--green);--progress-mask:transparent}model-viewer::part(default-progress-bar){height:3px}model-viewer::part(ar-button){background:var(--orange);color:#160900;border-radius:10px}.stage-badge{position:absolute;top:14px;left:14px;z-index:3;font-size:10px;letter-spacing:.13em;color:var(--blue);border:1px solid rgba(255,255,255,.2);background:rgba(2,11,21,.75);padding:7px 10px;border-radius:7px}.stage-corner{position:absolute;right:14px;top:14px;z-index:4}.viewer-bottom{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:0 14px 14px}.tool-row{display:flex;gap:6px;flex-wrap:wrap}.viewer-info{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 14px 15px}.info-tile{border:1px solid var(--line);border-radius:10px;padding:10px;background:rgba(2,11,21,.35)}.info-tile span{display:block;color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.1em}.info-tile strong{display:block;margin-top:5px;font-size:12px}.vr-scene{position:absolute;inset:0;width:100%;height:100%;display:none;background:#031426}.vr-scene a-scene{width:100%;height:100%}.ar-hint{margin:0 14px 14px;padding:11px 13px;border-radius:10px;border:1px solid rgba(255,122,26,.25);background:rgba(255,122,26,.06);color:#ffd0ad;font-size:11px;line-height:1.5}.right-panel .panel-body{padding:14px}.subtabs{width:100%;margin-bottom:14px}.subtabs button{flex:1;padding:9px 4px}.tab-content{display:none}.tab-content.active{display:block}.mission-card{border:1px solid rgba(182,232,0,.23);border-radius:13px;padding:14px;background:linear-gradient(145deg,rgba(182,232,0,.07),rgba(0,183,255,.04));margin-top:14px}.mission-card h3{font-size:13px;margin:7px 0 5px}.mission-card p{font-size:10px;color:var(--muted);line-height:1.55;margin:0}.steps{display:grid;gap:7px;margin:13px 0}.step{display:flex;align-items:center;gap:9px;padding:9px;border:1px solid var(--line);border-radius:9px;background:rgba(2,11,21,.35);font-size:11px}.step input{accent-color:var(--green);width:15px;height:15px}.step b{color:var(--green);font-size:9px;letter-spacing:.08em}.progress-track{height:5px;background:#132c3b;border-radius:9px;overflow:hidden;margin:8px 0}.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--green));transition:width .25s}.full{width:100%}.annotation-list{display:grid;gap:8px;margin-top:12px}.annotation-item{padding:10px;border:1px solid var(--line);border-radius:9px;display:flex;gap:8px;align-items:flex-start}.annotation-item p{font-size:11px;margin:0;flex:1;line-height:1.5}.annotation-item button{background:none;border:0;color:#ff9a7e}.notice{padding:10px;border-radius:9px;background:rgba(0,183,255,.07);border:1px solid rgba(255,255,255,.12);font-size:10px;color:var(--muted);line-height:1.55}.prompt-output{min-height:180px;font-size:11px;line-height:1.6}.modal-backdrop{position:fixed;inset:0;background:rgba(0,5,12,.82);backdrop-filter:blur(12px);z-index:100;display:flex;align-items:center;justify-content:center;padding:18px}.modal{width:min(650px,100%);max-height:90vh;overflow:auto;border:1px solid rgba(0,183,255,.35);border-radius:20px;background:linear-gradient(145deg,#292929,#080808 70%);box-shadow:0 30px 100px rgba(0,0,0,.6);padding:clamp(20px,4vw,34px);position:relative}.modal h2{font-size:clamp(22px,4vw,32px);margin:8px 0 12px;line-height:1.12}.modal-intro{color:#d2e4ef;font-size:13px;line-height:1.8}.role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:20px 0}.role{border:1px solid var(--line);border-radius:12px;padding:13px;background:rgba(2,11,21,.45)}.role strong{font-size:10px;color:var(--green);letter-spacing:.12em}.role p{font-size:10px;line-height:1.55;color:var(--muted);margin:8px 0 0}.question-box{padding:15px;border-left:3px solid var(--orange);background:rgba(255,122,26,.07);font-size:14px;line-height:1.6;font-weight:650;margin-bottom:18px}.modal-actions{display:flex;gap:8px;flex-wrap:wrap}.modal-close{position:absolute;top:13px;right:13px;background:transparent;border:0;color:var(--muted);font-size:22px}.diag-list{display:grid;gap:9px;margin:17px 0}.diag-item{display:flex;justify-content:space-between;gap:15px;padding:11px;border:1px solid var(--line);border-radius:10px;font-size:12px}.diag-item span:last-child{text-align:right;color:var(--muted)}.toast-wrap{position:fixed;right:16px;bottom:16px;z-index:150;display:grid;gap:8px}.toast{padding:12px 15px;border:1px solid rgba(0,183,255,.35);border-radius:10px;background:#242424;box-shadow:var(--shadow);font-size:12px;max-width:min(360px,calc(100vw - 32px));animation:slide .25s ease}.toast.error{border-color:#ffb86b}.empty-state{text-align:center;color:var(--muted);font-size:11px;padding:18px 5px}.footer{max-width:1800px;margin:auto;padding:0 28px 24px;color:#6f91a5;font-size:10px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.hidden{display:none!important}.vr-overlay{position:absolute;z-index:10;bottom:12px;left:12px;right:12px;display:flex;justify-content:space-between;gap:8px;pointer-events:none}.vr-overlay>*{pointer-events:auto}
+@keyframes slide{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+@media(max-width:1180px){.layout{grid-template-columns:250px minmax(0,1fr)}.right-panel{grid-column:1/-1}.right-panel .panel-body{display:grid;grid-template-columns:1fr 1fr;gap:14px}.right-panel .subtabs{grid-column:1/-1;margin-bottom:0}.right-panel .tab-content.active{grid-column:1/-1}.viewer-stage{height:420px}}
+@media(max-width:760px){.topbar{position:relative;align-items:flex-start}.status-list{display:none}.top-actions .btn{padding:8px;font-size:10px}.layout{display:flex;flex-direction:column;padding:12px;width:100%}.viewer-panel{order:0;width:100%;min-height:0}.library-panel{order:1;width:100%}.right-panel{order:2;width:100%}.viewer-stage{height:min(62vh,430px);min-height:300px;margin:10px}.viewer-head{padding:13px}.viewer-head h2{font-size:15px}.mode-tabs{width:100%}.mode-tabs button{flex:1;padding:9px 3px;font-size:10px}.viewer-info{grid-template-columns:repeat(3,minmax(0,1fr));padding:0 10px 12px}.info-tile{padding:8px}.info-tile strong{font-size:10px}.right-panel .panel-body{display:block}.role-grid{grid-template-columns:1fr}.role{display:flex;gap:12px;align-items:center}.role p{margin:0}.footer{padding:0 14px 20px}.brand p{max-width:190px;line-height:1.4}.logo{width:38px;height:38px}.modal-actions .btn{flex:1}.modal{padding:24px 18px}.viewer-bottom{padding:0 10px 12px}.tool-row{width:100%}.tool-row .btn{flex:1}.panel-head{padding:14px}.panel-body{padding:12px}}
+
+.hero-xr{max-width:1800px;margin:24px auto 18px;padding:0 clamp(14px,2vw,28px);display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:22px;align-items:stretch}.hero-copy{padding:clamp(24px,4vw,58px) 0;display:flex;flex-direction:column;justify-content:center}.hero-copy h2{font-size:clamp(38px,5.6vw,76px);line-height:.98;letter-spacing:-.065em;max-width:720px;margin:16px 0}.hero-copy h2 span{color:#aaa}.hero-copy p{max-width:650px;color:#c0c0c0;font-size:clamp(14px,1.3vw,17px);line-height:1.8}.hero-actions{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0 28px}.team-strip{display:flex;align-items:center;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:17px}.team-strip span{width:100%;font-size:9px;letter-spacing:.16em;color:#888}.team-strip strong{font-size:12px}.team-strip i{width:4px;height:4px;border-radius:50%;background:#777}.hero-visual{position:relative;min-height:360px;border:1px solid #444;border-radius:18px;overflow:hidden;background:#080808}.hero-visual img{position:absolute;width:100%;height:100%;object-fit:cover;inset:0;filter:grayscale(1);opacity:.92}.hero-visual:after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,rgba(0,0,0,.72));pointer-events:none}.hero-caption{position:absolute;z-index:1;bottom:18px;left:20px;right:20px;display:flex;justify-content:space-between;gap:12px;align-items:center;font-size:12px;font-weight:800;letter-spacing:.14em}.hero-caption span{font-size:9px;color:#bbb}.topic-section{max-width:1744px;margin:0 auto 24px;padding:28px clamp(14px,2vw,28px);border-top:1px solid #303030;border-bottom:1px solid #303030;background:linear-gradient(180deg,rgba(255,255,255,.025),transparent)}.topic-heading{display:flex;justify-content:space-between;align-items:end;gap:28px;margin-bottom:18px}.topic-heading h2{font-size:clamp(25px,3vw,38px);letter-spacing:-.04em;margin:8px 0}.topic-heading>p{max-width:560px;color:#aaa;line-height:1.7;font-size:13px;margin:0 0 5px}.topic-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.topic-card{padding:18px;border:1px solid #383838;border-radius:13px;background:linear-gradient(145deg,#1c1c1c,#101010)}.topic-card>span{font-size:9px;color:#999;letter-spacing:.14em}.topic-card h3{font-size:16px;line-height:1.2;margin:13px 0 9px}.topic-card p{font-size:12px;line-height:1.75;color:#aaa;margin:0}.application-band{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:22px;margin-top:12px;background:#171717;border:1px solid #333;border-radius:13px}.application-band h3{font-size:20px;margin:8px 0 0;max-width:450px}.application-band ul{margin:0;padding-left:18px;color:#bbb;font-size:12px;line-height:2}.research-note{font-size:10px;line-height:1.7;color:#999;margin-top:13px}.research-note a{color:#eee;text-decoration:underline;text-underline-offset:3px}.layout{scroll-margin-top:20px}
+@media(max-width:1000px){.topic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-xr{grid-template-columns:1fr 1fr}.hero-visual{min-height:320px}}
+@media(max-width:700px){.hero-xr{grid-template-columns:1fr;margin-top:10px;gap:4px}.hero-copy{padding:26px 3px 12px}.hero-visual{min-height:250px}.team-strip{gap:7px}.team-strip strong{font-size:10px}.topic-heading{display:block}.topic-heading>p{margin-top:10px}.topic-grid{grid-template-columns:1fr}.application-band{grid-template-columns:1fr;padding:17px}.hero-caption{left:13px;right:13px;bottom:13px}.hero-caption span{font-size:8px}}
+
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <svg class="logo" viewBox="0 0 64 64" role="img" aria-label="Logotipo Nexo XR"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8b7cff"/><stop offset="1" stop-color="#42e6b4"/></linearGradient></defs><path d="M32 4 56 18v28L32 60 8 46V18Z" fill="none" stroke="url(#lg)" stroke-width="2.5"/><path d="m18 22 14 20 14-20M18 42l14-20 14 20" fill="none" stroke="#8b7cff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="32" r="5" fill="#42e6b4"/></svg>
+    <div><h1>NEXO XR <span style="color:var(--blue)">EDU</span></h1><p>AULA INMERSIVA · MODELOS 3D · APRENDIZAJE ACTIVO</p></div>
+  </div>
+  <div class="status-list"><span class="status"><i></i>3D ACTIVO</span><span class="status" id="headerAR"><i style="background:#ffb86b;box-shadow:0 0 9px #ffb86b"></i>RA VERIFICABLE</span><span class="status" id="headerVR"><i></i>RV WEBXR</span></div>
+  <div class="top-actions"><button class="btn ghost" id="diagnosticBtn">⌁ Diagnóstico</button><button class="btn" id="helpBtn">? Ayuda</button></div>
+</header>
+
+
+<section class="hero-xr" aria-labelledby="heroTitle">
+  <div class="hero-copy">
+    <div class="eyebrow">TECNOLOGÍA · EDUCACIÓN · EXPERIENCIA</div>
+    <h2 id="heroTitle">Aprender también es <span>explorar</span>.</h2>
+    <p>Realidad extendida aplicada a la educación: modelos tridimensionales, simulación e interacción para transformar conceptos complejos en experiencias que se pueden observar y comprender.</p>
+    <div class="hero-actions"><a class="btn primary" href="#laboratorio">ENTRAR AL LABORATORIO ↘</a><a class="btn ghost" href="#tema">CONOCER EL TEMA</a></div>
+    <div class="team-strip"><span>PROYECTO DESARROLLADO POR</span><strong>Sandry Curieuxs</strong><i></i><strong>Luis Cuadrado</strong><i></i><strong>Fernando Pertuz</strong></div>
+  </div>
+  <div class="hero-visual"><img src="nexo-xr-hero.png" alt="Experiencia educativa de realidad extendida con modelos holográficos de anatomía, ciencia y tecnología"><div class="hero-caption">NEXO XR LAB <span>01 / EXPLORACIÓN INMERSIVA</span></div></div>
+</section>
+<section class="topic-section" id="tema">
+  <div class="topic-heading"><div><div class="eyebrow">EL TEMA CENTRAL</div><h2>Realidad extendida en la educación</h2></div><p>Una tecnología con propósito pedagógico: no se trata de usar pantallas por usarlas, sino de mejorar la forma de representar, explorar y explicar el conocimiento.</p></div>
+  <div class="topic-grid">
+    <article class="topic-card"><span>01 / CONCEPTO</span><h3>¿Qué es la realidad extendida?</h3><p>La realidad extendida (XR) reúne experiencias de realidad aumentada (RA), realidad virtual (RV) y realidad mixta (RM). La RA incorpora elementos digitales al entorno real; la RV crea un entorno digital inmersivo; y la RM combina objetos físicos y digitales con interacción espacial.</p></article>
+    <article class="topic-card"><span>02 / IMPLEMENTACIÓN</span><h3>¿Cómo se aplica al aprendizaje?</h3><p>Un docente puede presentar modelos 3D de órganos, moléculas, estructuras matemáticas o piezas históricas. El estudiante los rota, amplía, compara y observa desde diferentes perspectivas, acompañado por preguntas, objetivos y actividades guiadas.</p></article>
+    <article class="topic-card"><span>03 / IMPORTANCIA</span><h3>¿Por qué es importante?</h3><p>Permite visualizar relaciones espaciales, explorar objetos difíciles de observar directamente y practicar en simulaciones. Puede aumentar la participación y apoyar la comprensión cuando está alineada con una meta de aprendizaje.</p></article>
+    <article class="topic-card"><span>04 / RETOS</span><h3>Uso responsable y límites</h3><p>La XR no reemplaza al docente ni garantiza por sí sola mejores resultados. Su implementación debe considerar acceso a dispositivos, conectividad, accesibilidad, privacidad, tiempo de pantalla y evaluación del aprendizaje.</p></article>
+  </div>
+  <div class="application-band"><div><div class="eyebrow">EJEMPLOS DE APLICACIÓN</div><h3>Del concepto abstracto a la experiencia observable.</h3></div><ul><li><b>Biología:</b> explorar sistemas del cuerpo humano.</li><li><b>Química:</b> observar geometrías moleculares.</li><li><b>Física:</b> representar fuerzas y movimiento en 3D.</li><li><b>Historia:</b> recorrer reconstrucciones de espacios y objetos.</li></ul></div>
+  <div class="research-note"><strong>Fundamento:</strong> UNESCO señala que la RA y la RV pueden ofrecer nuevas formas de explicar conceptos y explorar escenarios simulados, pero recomienda que la tecnología se use de forma apropiada, equitativa y basada en evidencia. <a href="https://gem-report-2023.unesco.org/technology-in-education/" target="_blank" rel="noopener">Consultar informe UNESCO ↗</a> · <a href="https://doi.org/10.1002/cae.22628" target="_blank" rel="noopener">Meta-análisis sobre RA ↗</a></div>
+</section>
+
+<main class="layout" id="laboratorio">
+  <aside class="panel library-panel" aria-label="Biblioteca de modelos">
+    <div class="panel-head"><div><div class="eyebrow">01 / Recursos</div><h2>Biblioteca 3D</h2></div><span class="count" id="modelCount">4</span></div>
+    <div class="panel-body">
+      <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Seleccionar o arrastrar modelos GLB">
+        <div class="upload-icon">⇧</div><strong>Importa tu propio universo</strong><p>Arrastra archivos aquí o selecciona uno o varios modelos .glb</p>
+        <button class="btn primary small" id="browseBtn">＋ Seleccionar archivos</button>
+        <input type="file" id="fileInput" accept=".glb,model/gltf-binary" multiple hidden>
+      </div>
+      <div class="field"><label for="modelUrl">Cargar desde URL pública HTTPS</label><div class="url-row"><input id="modelUrl" type="url" placeholder="https://sitio.com/modelo.glb" aria-label="URL pública del modelo"><button class="btn small" id="loadUrlBtn">Cargar</button></div><div class="tiny">La URL debe permitir acceso CORS y entregar un archivo GLB válido. Si falla, descarga el archivo e impórtalo localmente.</div></div>
+      <div class="section-label">Modelos disponibles <span id="modelCountText">04 modelos</span></div>
+      <div class="model-list" id="modelList"></div>
+      <div class="notice" style="margin-top:14px">ⓘ Los archivos locales se guardan en este navegador mediante almacenamiento local. No se suben a un servidor ni se sincronizan entre dispositivos.</div>
+    </div>
+  </aside>
+
+  <section class="panel viewer-panel" aria-label="Visualizador inmersivo">
+    <div class="viewer-head"><div><div class="eyebrow">02 / Experiencia inmersiva</div><h2 id="activeModelTitle">Astronauta de demostración</h2></div><div class="mode-tabs" role="tablist" aria-label="Modo de visualización">
+      <button class="active" data-mode="3d" role="tab" aria-selected="true">◈ EXPLORAR 3D</button><button data-mode="ar" role="tab" aria-selected="false">◎ REALIDAD AUMENTADA</button><button data-mode="vr" role="tab" aria-selected="false">⌘ LAB. RV</button>
+    </div></div>
+    <div class="viewer-stage" id="viewerStage">
+      <div class="stage-badge" id="stageBadge">LIVE RENDER / GLB</div>
+      <button class="btn small stage-corner" id="fullscreenBtn" aria-label="Pantalla completa">⛶</button>
+      <model-viewer id="modelViewer" src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" alt="Modelo tridimensional de un astronauta" camera-controls touch-action="pan-y" auto-rotate shadow-intensity="1" exposure="1" environment-image="neutral" ar ar-modes="webxr scene-viewer quick-look" ar-scale="auto" camera-orbit="0deg 75deg 2.5m" min-camera-orbit="auto auto 0.5m" max-camera-orbit="auto auto 8m" loading="eager" reveal="auto">
+        <div slot="progress-bar" style="height:3px;background:var(--blue)"></div>
+        <button slot="ar-button" class="btn orange" style="position:absolute;bottom:16px;right:16px">◎ ACTIVAR CÁMARA RA</button>
+        <div slot="poster" class="empty-state">Preparando modelo 3D…</div>
+      </model-viewer>
+      <div class="vr-scene" id="vrSceneWrap">
+        <a-scene id="vrScene" embedded vr-mode-ui="enabled: true" renderer="colorManagement: true; physicallyCorrectLights: true" background="color: #031426" loading-screen="enabled: false">
+          <a-entity light="type: ambient; intensity: 0.8; color: #b9e6ff"></a-entity>
+          <a-entity light="type: directional; intensity: 1.5; color: #7bd9ff" position="-3 5 4"></a-entity>
+          <a-entity light="type: point; intensity: 2; color: #8b7cff; distance: 12" position="0 2.4 0"></a-entity>
+          <a-entity light="type: point; intensity: 1.2; color: #42e6b4; distance: 8" position="2 1 0"></a-entity>
+          <a-plane rotation="-90 0 0" width="200" height="200" color="#061a2b" material="roughness:0.7"></a-plane>
+          <a-entity id="floorGrid" position="0 0.012 0"></a-entity>
+          <a-cylinder position="0 0.12 0" radius="1.25" height="0.22" color="#0b3550" material="metalness:0.55; roughness:0.25"></a-cylinder>
+          <a-torus position="0 0.25 0" rotation="90 0 0" radius="1.15" radius-tubular="0.025" color="#8b7cff" material="emissive:#8b7cff; emissiveIntensity:1.8"></a-torus>
+          <a-torus position="0 0.27 0" rotation="90 0 0" radius="0.92" radius-tubular="0.012" color="#42e6b4" material="emissive:#42e6b4; emissiveIntensity:1.8"></a-torus>
+          <a-entity id="vrModel" position="0 0.35 0" rotation="0 25 0" scale="0.7 0.7 0.7"></a-entity>
+          <a-entity id="vrCameraRig" position="0 1.6 4">
+            <a-camera wasd-controls-enabled="true" look-controls="pointerLockEnabled: true">
+              <a-cursor color="#42e6b4" fuse="false" raycaster="objects: .clickable"></a-cursor>
+            </a-camera>
+            <a-entity laser-controls="hand: right" raycaster="objects: .clickable" line="color:#8b7cff; opacity:0.75"></a-entity>
+          </a-entity>
+          <a-sky color="#031426"></a-sky>
+        </a-scene>
+        <div class="vr-overlay"><span class="status">LABORATORIO VIRTUAL · WASD + RATÓN</span><button class="btn orange" id="exitVrBtn">Volver a 3D</button></div>
+      </div>
+    </div>
+    <div class="viewer-bottom">
+      <div class="tool-row"><button class="btn small" id="rotateBtn">⟳ Rotación: activa</button><button class="btn small" id="resetBtn">↺ Restablecer cámara</button><button class="btn small" id="animationBtn">▷ Animación</button></div>
+      <div class="tool-row"><button class="btn small" id="scaleDownBtn">− Escala</button><button class="btn small" id="scaleUpBtn">＋ Escala</button><button class="btn small" id="enterVrBtn">⌘ Entrar con visor</button></div>
+    </div>
+    <div class="viewer-info"><div class="info-tile"><span>Formato activo</span><strong id="formatInfo">GLB · PBR</strong></div><div class="info-tile"><span>Interacción</span><strong>Giro · Zoom · Táctil</strong></div><div class="info-tile"><span>Procedencia</span><strong id="sourceInfo">Demostración web</strong></div></div>
+    <div class="ar-hint" id="modeHint">Explora el modelo con el ratón o los dedos. Usa la rueda para acercar y alejar. En dispositivos compatibles, abre el modo RA desde el botón naranja.</div>
+  </section>
+
+  <aside class="panel right-panel" aria-label="Panel de mediación didáctica">
+    <div class="panel-head"><div><div class="eyebrow">03 / Diseño de aprendizaje</div><h2>Mediación didáctica</h2></div><span style="color:var(--green);font-size:11px">✦ EDU</span></div>
+    <div class="panel-body">
+      <div class="subtabs" role="tablist" aria-label="Herramientas pedagógicas">
+        <button class="active" data-tab="activity" role="tab" aria-selected="true">Actividad</button><button data-tab="points" role="tab" aria-selected="false">Puntos</button><button data-tab="ai" role="tab" aria-selected="false">Copiloto IA</button>
+      </div>
+      <section class="tab-content active" id="tab-activity">
+        <div class="field"><label for="activityTitle">Título de la experiencia</label><input id="activityTitle" value="Explora, conecta y aprende"></div>
+        <div class="field"><label for="subject">Área de conocimiento</label><select id="subject"><option>Informática</option><option>Ciencias naturales</option><option>Matemáticas</option><option>Salud</option><option>Historia</option><option>Arte</option><option>Ingeniería</option><option>Formación docente</option></select></div>
+        <div class="field"><label for="level">Nivel educativo</label><select id="level"><option>Educación inicial</option><option>Educación básica</option><option>Educación media</option><option>Educación técnica</option><option selected>Educación superior</option></select></div>
+        <div class="field"><label for="objective">Objetivo de aprendizaje</label><textarea id="objective" placeholder="Al finalizar, el estudiante será capaz de…">Analizar un modelo tridimensional, describir sus características y justificar cómo una representación inmersiva puede apoyar el aprendizaje.</textarea></div>
+        <div class="mission-card"><div class="eyebrow" style="color:var(--green)">Misión XR · 01</div><h3>MIRAR COMO INVESTIGADOR</h3><p>Investiga el objeto con intención: observa, señala, explica y transfiere lo aprendido a una situación nueva.</p>
+          <div class="steps">
+            <label class="step"><input type="checkbox" class="mission-check"><span><b>01 · OBSERVAR</b><br>Examinar el modelo desde diferentes ángulos.</span></label>
+            <label class="step"><input type="checkbox" class="mission-check"><span><b>02 · SEÑALAR</b><br>Identificar características relevantes.</span></label>
+            <label class="step"><input type="checkbox" class="mission-check"><span><b>03 · EXPLICAR</b><br>Conectar lo observado con conceptos de la asignatura.</span></label>
+            <label class="step"><input type="checkbox" class="mission-check"><span><b>04 · TRANSFERIR</b><br>Aplicar lo aprendido a una situación nueva.</span></label>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:10px"><span class="muted">Progreso de misión</span><strong id="progressText">0 / 4</strong></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        </div>
+        <div class="tool-row" style="margin-top:12px"><button class="btn green full" id="challengeBtn">✦ Generar reto</button><button class="btn full" id="downloadSheetBtn">↓ Descargar ficha</button></div>
+        <div class="notice hidden" id="challengeOutput" style="margin-top:10px"></div>
+        <button class="btn full" id="speakBtn" style="margin-top:9px">◖ Escuchar misión</button>
+      </section>
+
+      <section class="tab-content" id="tab-points">
+        <p class="tiny">Fija notas para guiar la observación. Activa el modo de fijación y pulsa sobre el modelo para guardar una ubicación aproximada en el visor 3D.</p>
+        <div class="field"><label for="annotationText">Texto del punto de interés</label><textarea id="annotationText" placeholder="¿Qué debe observar el estudiante?"></textarea></div>
+        <button class="btn orange full" id="pinModeBtn">＋ Fijar punto: desactivado</button>
+        <p class="tiny" id="pinStatus" aria-live="polite">Consejo: pulsa el modelo mientras el modo de fijación esté activo. El visor de model-viewer no expone raycasting arbitrario al DOM; el punto se guardará como referencia de cámara si no hay coordenadas de superficie disponibles.</p>
+        <div class="section-label">Anotaciones de este modelo <span class="count" id="annotationCount">0</span></div>
+        <div class="annotation-list" id="annotationList"><div class="empty-state">Aún no hay puntos de interés.</div></div>
+        <div class="tool-row" style="margin-top:10px"><button class="btn small" id="clearPointsBtn">Limpiar puntos</button></div>
+        <div class="section-label">Atribución del recurso</div>
+        <div class="field"><label for="attrAuthor">Autor / creador</label><input id="attrAuthor" placeholder="Nombre del autor"></div>
+        <div class="field"><label for="attrLicense">Licencia</label><select id="attrLicense"><option>No especificada</option><option>CC0 / Dominio público</option><option>CC BY</option><option>CC BY-SA</option><option>CC BY-NC</option><option>Licencia propietaria</option><option>Creación propia</option></select></div>
+        <div class="field"><label for="attrUrl">URL de origen</label><input id="attrUrl" type="url" placeholder="https://…"></div>
+        <button class="btn full" id="saveAttributionBtn">▣ Guardar atribución</button>
+        <p class="tiny">Respeta las condiciones de licencia y atribución del creador, especialmente al usar modelos de bibliotecas como Sketchfab.</p>
+      </section>
+
+      <section class="tab-content" id="tab-ai">
+        <div class="notice">El copiloto no llama a una API ni genera contenido mediante un modelo remoto. Construye un prompt listo para copiar en la herramienta educativa que el docente elija.</div>
+        <div class="field"><label for="supportType">Tipo de apoyo pedagógico</label><select id="supportType"><option>Secuencia antes-durante-después</option><option>Preguntas socráticas</option><option>Rúbrica de desempeño</option><option>Adaptaciones basadas en DUA</option><option>Caso o simulación profesional</option></select></div>
+        <div class="field"><label for="duration">Duración estimada</label><select id="duration"><option value="20">20 minutos</option><option value="35" selected>35 minutos</option><option value="50">50 minutos</option><option value="90">90 minutos</option></select></div>
+        <button class="btn green full" id="generatePromptBtn">✦ Crear prompt didáctico</button>
+        <div class="field"><label for="promptOutput">Prompt generado</label><textarea id="promptOutput" class="prompt-output" placeholder="Tu prompt aparecerá aquí…" rows="10"></textarea></div>
+        <div class="tool-row"><button class="btn full" id="copyPromptBtn">▣ Copiar prompt</button><button class="btn full" id="listenPromptBtn">◖ Escuchar</button></div>
+      </section>
+    </div>
+  </aside>
+</main>
+<footer class="footer"><span>NEXO XR LAB · Aprender observando, comprendiendo y transfiriendo.</span><span>Sandry Curieuxs · Luis Cuadrado · Fernando Pertuz</span><span>Los GLB y el progreso se guardan localmente en este navegador.</span></footer>
+
+<div class="modal-backdrop" id="welcomeModal" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+  <div class="modal"><div class="eyebrow">NEXO XR LAB / EXPERIENCIA 001</div><h2 id="welcomeTitle">EXPLORA, CONECTA Y APRENDE</h2><p class="modal-intro">Un mismo modelo puede ser observado en una pantalla, situado sobre una mesa o recorrido desde dentro. El reto no es identificar cuál tecnología impresiona más, sino cuál ayuda mejor a aprender.</p>
+    <div class="role-grid"><div class="role"><strong>◉ EXPLORADOR</strong><p>Explorar el modelo y registrar detalles relevantes.</p></div><div class="role"><strong>⌁ ANALISTA</strong><p>Conectar lo observado con conceptos de la asignatura.</p></div><div class="role"><strong>◇ DISEÑADOR</strong><p>Elegir una forma accesible de demostrar lo aprendido.</p></div></div>
+    <div class="question-box">“Si la tecnología desapareciera, ¿qué aprendizaje debería permanecer?”</div>
+    <div class="modal-actions"><button class="btn" id="exploreFirstBtn">EXPLORAR PRIMERO</button><button class="btn primary" id="startModelBtn">INICIAR CON EL MODELO ↗</button></div>
+  </div>
+</div>
+<div class="modal-backdrop hidden" id="diagnosticModal" role="dialog" aria-modal="true" aria-labelledby="diagnosticTitle"><div class="modal"><button class="modal-close" data-close="diagnosticModal" aria-label="Cerrar">×</button><div class="eyebrow">SISTEMA / AUTODIAGNÓSTICO</div><h2 id="diagnosticTitle">Diagnóstico de compatibilidad</h2><p class="modal-intro">La disponibilidad real depende del navegador, el dispositivo, los permisos y el contexto de publicación.</p><div class="diag-list" id="diagnosticList"></div><div class="notice">Para WebXR normalmente se requiere HTTPS (o localhost), navegador compatible y permisos del dispositivo. iOS puede utilizar Quick Look con archivos compatibles; la experiencia depende de la versión de Safari.</div><div class="modal-actions" style="margin-top:17px"><button class="btn primary" id="refreshDiagBtn">Volver a comprobar</button><button class="btn" data-close="diagnosticModal">Cerrar</button></div></div></div>
+<div class="modal-backdrop hidden" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="helpTitle"><div class="modal"><button class="modal-close" data-close="helpModal" aria-label="Cerrar">×</button><div class="eyebrow">GUÍA RÁPIDA</div><h2 id="helpTitle">Tu laboratorio, paso a paso</h2><p class="modal-intro">1. Selecciona un modelo de la biblioteca o importa un archivo GLB. 2. Explóralo con giros y zoom. 3. Prueba RA si tu dispositivo la admite. 4. Entra al laboratorio RV con un visor compatible o navega desde el escritorio. 5. Diseña una misión, agrega puntos de interés y crea un prompt didáctico.</p><div class="notice">Importante: los modos RA/RV dependen del soporte del dispositivo y del navegador. Un modelo GLB puede no contener animaciones. Las URL externas pueden fallar por CORS. Los GLB importados y el progreso se guardan localmente en este navegador; no se sincronizan con otros dispositivos.</div><div class="modal-actions" style="margin-top:17px"><button class="btn primary" data-close="helpModal">Entendido</button></div></div></div>
+<div class="toast-wrap" id="toastWrap" aria-live="polite" aria-atomic="true"></div>
+
+<script>
+(() => {
+'use strict';
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const viewer = $('#modelViewer');
+const META_KEY='nexo-xr-meta-v1';
+const DB_NAME='nexo-xr-models';
+const state = {
+  mode:'3d', models:[], activeId:null, rotate:true, scale:1, pinMode:false,
+  annotations:{}, attribution:{}, mission:[false,false,false,false], compatibility:{},
+  vrLoaded:false, vrError:false, welcomeDismissed:false
+};
+function readSavedMeta(){
+  try { return JSON.parse(localStorage.getItem(META_KEY)||'{}'); }
+  catch(error){ console.warn('No se pudo leer el progreso guardado',error); return {}; }
+}
+function saveMeta(){
+  try {
+    localStorage.setItem(META_KEY,JSON.stringify({
+      annotations:state.annotations, attribution:state.attribution, mission:state.mission,
+      activity:{title:$('#activityTitle')?.value||'',subject:$('#subject')?.value||'',level:$('#level')?.value||'',objective:$('#objective')?.value||''}
+    }));
+  } catch(error){ console.warn('No se pudo guardar el progreso local',error); }
+}
+function openModelDb(){
+  return new Promise((resolve,reject)=>{
+    if(!('indexedDB' in window)){reject(new Error('IndexedDB no está disponible'));return;}
+    const request=indexedDB.open(DB_NAME,1);
+    request.onupgradeneeded=()=>{if(!request.result.objectStoreNames.contains('models'))request.result.createObjectStore('models',{keyPath:'id'});};
+    request.onsuccess=()=>resolve(request.result);
+    request.onerror=()=>reject(request.error||new Error('No se pudo abrir la biblioteca local'));
+  });
+}
+async function saveLocalModel(id,file){
+  const db=await openModelDb();
+  try { await new Promise((resolve,reject)=>{const tx=db.transaction('models','readwrite');tx.objectStore('models').put({id,name:file.name,size:file.size,blob:file});tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error||new Error('No se pudo guardar el modelo'));tx.onabort=()=>reject(tx.error||new Error('Se canceló el guardado'));}); }
+  finally { db.close(); }
+}
+async function deleteLocalModel(id){
+  try { const db=await openModelDb();try{await new Promise((resolve,reject)=>{const tx=db.transaction('models','readwrite');tx.objectStore('models').delete(id);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error||new Error('No se pudo eliminar el modelo'));});}finally{db.close();} }
+  catch(error){console.warn('No se pudo eliminar el modelo guardado',error);}
+}
+async function restoreLocalModels(){
+  try {
+    const db=await openModelDb();let saved;
+    try{saved=await new Promise((resolve,reject)=>{const tx=db.transaction('models','readonly');const request=tx.objectStore('models').getAll();request.onsuccess=()=>resolve(request.result||[]);request.onerror=()=>reject(request.error||new Error('No se pudo leer la biblioteca'));});}finally{db.close();}
+    for(const item of saved){if(state.models.some(model=>model.id===item.id)||!item.blob)continue;const objectUrl=URL.createObjectURL(item.blob);state.models.push({id:item.id,name:item.name,src:objectUrl,kind:'local',size:item.size,origin:'Archivo local guardado en este navegador',format:'GLB · local',ownedUrl:true});}
+    renderModels();
+  } catch(error){console.warn('La biblioteca local persistente no está disponible',error);}
+}
+const savedMeta=readSavedMeta();
+state.annotations=savedMeta.annotations||{};
+state.attribution=savedMeta.attribution||{};
+state.mission=Array.isArray(savedMeta.mission)&&savedMeta.mission.length===4?savedMeta.mission:[false,false,false,false];
+const demoId='demo-astronaut';
+const demoModels=[
+ {id:demoId,name:'Astronauta',src:'https://modelviewer.dev/shared-assets/models/Astronaut.glb',origin:'modelviewer.dev · modelo de demostración'},
+ {id:'demo-duck',name:'Pato 3D',src:'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/Duck/glTF-Binary/Duck.glb',origin:'Khronos glTF Sample Assets'},
+ {id:'demo-helmet',name:'Casco de exploración',src:'https://modelviewer.dev/shared-assets/models/DamagedHelmet.glb',origin:'modelviewer.dev · modelo de demostración'},
+ {id:'demo-robot',name:'Robot animado',src:'https://threejs.org/examples/models/gltf/RobotExpressive/RobotExpressive.glb',origin:'Three.js · modelo de demostración'}
+];
+demoModels.forEach(m=>state.models.push({...m,kind:'url',size:null,format:'GLB · PBR',animations:[],ownedUrl:false}));
+state.activeId=demoId;
+const modelById = id => state.models.find(m=>m.id===id);
+const activeModel = () => modelById(state.activeId);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toast(message,type='ok'){const el=document.createElement('div');el.className='toast'+(type==='error'?' error':'');el.textContent=message;$('#toastWrap').append(el);setTimeout(()=>el.remove(),3800);}
+function safeText(el,value){el.textContent=String(value??'');}
+function formatSize(n){if(n==null)return 'Remoto';if(n<1024*1024)return (n/1024).toFixed(0)+' KB';return (n/1024/1024).toFixed(2)+' MB';}
+function renderModels(){
+  $('#modelCount').textContent=state.models.length;
+  $('#modelCountText').textContent=state.models.length+' '+(state.models.length===1?'modelo':'modelos');
+  const list=$('#modelList');list.replaceChildren();
+  if(!state.models.length){const e=document.createElement('div');e.className='empty-state';e.textContent='No hay modelos. Importa un archivo GLB para comenzar.';list.append(e);return;}
+  state.models.forEach(m=>{
+    const card=document.createElement('div');card.className='model-card'+(m.id===state.activeId?' active':'');card.tabIndex=0;card.setAttribute('role','button');card.setAttribute('aria-label','Seleccionar '+m.name);
+    const thumb=document.createElement('div');thumb.className='model-thumb';thumb.textContent='⬡';
+    const meta=document.createElement('div');meta.className='model-meta';const strong=document.createElement('strong');strong.textContent=m.name;const small=document.createElement('span');small.textContent=`${formatSize(m.size)} · ${m.kind==='local'?'Archivo local':'URL / demo'}`;meta.append(strong,small);
+    card.append(thumb,meta);
+    if(m.id!==demoId){const del=document.createElement('button');del.className='model-delete';del.type='button';del.title='Eliminar modelo';del.setAttribute('aria-label','Eliminar '+m.name);del.textContent='×';del.addEventListener('click',e=>{e.stopPropagation();removeModel(m.id);});card.append(del);}
+    const choose=()=>selectModel(m.id);card.addEventListener('click',choose);card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();choose();}});list.append(card);
+  });
+}
+function setViewerSource(model){
+  if(!model)return;
+  viewer.src=model.src;
+  viewer.alt='Modelo tridimensional: '+model.name;
+  $('#activeModelTitle').textContent=model.name;
+  $('#sourceInfo').textContent=model.origin|| (model.kind==='local'?'Archivo local':'URL externa');
+  $('#formatInfo').textContent=model.format||'GLB · PBR';
+  $('#animationBtn').disabled=true;$('#animationBtn').textContent='▷ Animación';
+  $('#attrAuthor').value=state.attribution[model.id]?.author||'';
+  $('#attrLicense').value=state.attribution[model.id]?.license||'No especificada';
+  $('#attrUrl').value=state.attribution[model.id]?.url|| (model.kind==='url'?model.src:'');
+  renderAnnotations();
+  updateVrModel();
+}
+function selectModel(id){const m=modelById(id);if(!m)return;state.activeId=id;state.scale=1;viewer.scale='1 1 1';viewer.cameraOrbit='0deg 75deg 2.5m';setViewerSource(m);renderModels();toast('Modelo activo: '+m.name);if(state.mode==='vr')updateVrModel();}
+function removeModel(id){
+  const i=state.models.findIndex(m=>m.id===id);if(i<0)return;
+  const m=state.models[i];if(m.ownedUrl&&m.src)URL.revokeObjectURL(m.src);if(m.kind==='local')deleteLocalModel(id);
+  state.models.splice(i,1);delete state.annotations[id];delete state.attribution[id];saveMeta();
+  if(state.activeId===id){if(state.models.length)state.activeId=state.models[0].id;else{state.models.push({...demoModels[0],kind:'url',size:null,format:'GLB · PBR',ownedUrl:false});state.activeId=demoId;}setViewerSource(activeModel());}
+  renderModels();toast('Modelo eliminado y recursos locales liberados.');
+}
+function addFiles(files){
+  const valid=[...files].filter(f=>f.name.toLowerCase().endsWith('.glb')||f.type==='model/gltf-binary');
+  if(!valid.length){toast('Selecciona archivos GLB válidos.','error');return;}
+  valid.forEach(file=>{const src=URL.createObjectURL(file);const id='local-'+Date.now()+'-'+Math.random().toString(36).slice(2,8);state.models.push({id,name:file.name,src,kind:'local',size:file.size,origin:'Archivo local',format:'GLB · local',ownedUrl:true});saveLocalModel(id,file).catch(error=>{console.warn(error);toast('El modelo se cargó, pero no pudo guardarse para próximas sesiones.','error');});});
+  renderModels();selectModel(state.models[state.models.length-valid.length].id);toast(valid.length+' modelo(s) importado(s).');
+}
+async function addUrl(){
+  const url=$('#modelUrl').value.trim();if(!url)return toast('Escribe una URL pública HTTPS.','error');
+  let parsed;try{parsed=new URL(url);}catch{return toast('La URL no tiene un formato válido.','error');}
+  if(parsed.protocol!=='https:'){return toast('Por seguridad, utiliza una URL HTTPS pública.','error');}
+  const id='url-'+Date.now();let name=parsed.pathname.split('/').pop()||'Modelo remoto';try{name=decodeURIComponent(name);}catch{name='Modelo remoto';}name=name.replace(/\.glb$/i,'')||'Modelo remoto';
+  const m={id,name,src:parsed.href,kind:'url',size:null,origin:'URL externa',format:'GLB · remoto',ownedUrl:false};
+  state.models.push(m);renderModels();selectModel(id);$('#modelUrl').value='';
+  toast('URL añadida. Si no carga, comprueba que sea un GLB directo y permita CORS.');
+}
+$('#browseBtn').addEventListener('click',e=>{e.stopPropagation();$('#fileInput').click();});
+$('#dropzone').addEventListener('click',e=>{if(e.target.id!=='browseBtn')$('#fileInput').click();});
+$('#dropzone').addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('#fileInput').click();}});
+$('#fileInput').addEventListener('change',e=>{addFiles(e.target.files);e.target.value='';});
+['dragenter','dragover'].forEach(ev=>$('#dropzone').addEventListener(ev,e=>{e.preventDefault();$('#dropzone').classList.add('dragover');}));
+['dragleave','drop'].forEach(ev=>$('#dropzone').addEventListener(ev,e=>{e.preventDefault();$('#dropzone').classList.remove('dragover');}));
+$('#dropzone').addEventListener('drop',e=>addFiles(e.dataTransfer.files));
+$('#loadUrlBtn').addEventListener('click',addUrl);
+$('#modelUrl').addEventListener('keydown',e=>{if(e.key==='Enter')addUrl();});
+viewer.addEventListener('load',()=>{
+  toast('Modelo 3D listo para explorar.');
+  const animations=viewer.availableAnimations||[];
+  $('#animationBtn').disabled=!animations.length;
+  $('#animationBtn').textContent=animations.length?'▷ Animación ('+animations.length+')':'▷ Sin animaciones';
+  const m=activeModel();if(m)m.animations=animations;
+});
+viewer.addEventListener('error',()=>toast('No se pudo cargar el modelo. Comprueba que sea un GLB válido y que la URL permita CORS.','error'));
+viewer.addEventListener('progress',e=>{if(e.detail?.totalProgress<1)$('#stageBadge').textContent='CARGANDO · '+Math.round(e.detail.totalProgress*100)+'%';else $('#stageBadge').textContent='LIVE RENDER / GLB';});
+$('#rotateBtn').addEventListener('click',()=>{state.rotate=!state.rotate;viewer.toggleAttribute('auto-rotate',state.rotate);$('#rotateBtn').textContent='⟳ Rotación: '+(state.rotate?'activa':'pausada');});
+$('#resetBtn').addEventListener('click',()=>{viewer.cameraOrbit='0deg 75deg 2.5m';viewer.cameraTarget='auto auto auto';viewer.fieldOfView='auto';state.scale=1;viewer.scale='1 1 1';toast('Cámara restablecida.');});
+$('#scaleUpBtn').addEventListener('click',()=>{state.scale=Math.min(2.5,state.scale+.1);viewer.scale=`${state.scale} ${state.scale} ${state.scale}`;});
+$('#scaleDownBtn').addEventListener('click',()=>{state.scale=Math.max(.3,state.scale-.1);viewer.scale=`${state.scale} ${state.scale} ${state.scale}`;});
+$('#animationBtn').addEventListener('click',()=>{if(!viewer.availableAnimations?.length)return; if(viewer.paused){viewer.play();$('#animationBtn').textContent='Ⅱ Pausar animación';}else{viewer.pause();$('#animationBtn').textContent='▷ Reproducir animación';}});
+$('#fullscreenBtn').addEventListener('click',async()=>{try{if(!document.fullscreenElement)await $('#viewerStage').requestFullscreen();else await document.exitFullscreen();}catch{toast('La pantalla completa no está disponible en este navegador.','error');}});
+function setMode(mode){
+  state.mode=mode;$$('[data-mode]').forEach(b=>{b.classList.toggle('active',b.dataset.mode===mode);b.setAttribute('aria-selected',String(b.dataset.mode===mode));});
+  const isVR=mode==='vr';$('#vrSceneWrap').style.display=isVR?'block':'none';viewer.style.display=isVR?'none':'block';
+  $('#stageBadge').textContent=mode==='3d'?'LIVE RENDER / GLB':mode==='ar'?'AR READY CHECK':'IMMERSIVE LAB / A-FRAME';
+  $('#enterVrBtn').classList.toggle('hidden',isVR);
+  const hints={'3d':'Explora el modelo con el ratón o los dedos. Usa la rueda para acercar y alejar. En dispositivos compatibles, abre el modo RA desde el botón naranja.',ar:'La RA requiere un dispositivo compatible y permisos de cámara. En Android puede abrir Scene Viewer/WebXR; en iOS puede utilizar Quick Look. Si no aparece el botón, usa el modo 3D.',vr:'Laboratorio A-Frame: navega con WASD y ratón en escritorio, o usa un visor compatible con WebXR. En móvil puedes mirar alrededor; las capacidades dependen del navegador.'};
+  $('#modeHint').textContent=hints[mode];
+  if(mode==='ar'){viewer.activateAR?.().catch?.(()=>{});toast('Pulsa “ACTIVAR CÁMARA RA” en el visor si tu dispositivo es compatible.');}
+  if(isVR){updateVrModel();$('#vrScene').components?.['vr-mode-ui'];}
+}
+$$('[data-mode]').forEach(b=>b.addEventListener('click',()=>setMode(b.dataset.mode)));
+$('#enterVrBtn').addEventListener('click',()=>setMode('vr'));$('#exitVrBtn').addEventListener('click',()=>setMode('3d'));
+$('#vrScene').addEventListener('loaded',()=>{state.vrLoaded=true;updateVrModel();});
+function updateVrModel(){
+  const host=$('#vrModel');if(!host||!state.vrLoaded)return;
+  while(host.firstChild)host.removeChild(host.firstChild);
+  const m=activeModel();if(!m)return;
+  const ent=document.createElement('a-entity');ent.setAttribute('gltf-model',m.src);ent.setAttribute('fit-gltf','');ent.setAttribute('spin-model','enabled: '+state.rotate);
+  ent.addEventListener('model-error',()=>toast('El modelo no pudo cargarse en el laboratorio RV.','error'));
+  host.appendChild(ent);
+}
+if(window.AFRAME){
+ AFRAME.registerComponent('fit-gltf',{schema:{maxSize:{default:1.35}},init:function(){this.el.addEventListener('model-loaded',()=>{try{const obj=this.el.getObject3D('mesh');if(!obj)return;const THREE=AFRAME.THREE;const box=new THREE.Box3().setFromObject(obj);const size=box.getSize(new THREE.Vector3());const center=box.getCenter(new THREE.Vector3());const max=Math.max(size.x,size.y,size.z)||1;const scale=this.data.maxSize/max;obj.scale.multiplyScalar(scale);obj.position.x-=center.x*scale;obj.position.y-=center.y*scale;obj.position.z-=center.z*scale;obj.position.y+=.5;}catch(err){console.warn('No se pudo ajustar el modelo',err);}});}});
+ AFRAME.registerComponent('spin-model',{schema:{enabled:{default:true}},tick:function(t,dt){if(this.data.enabled&&this.el.object3D)this.el.object3D.rotation.y+=(dt||0)*.00035;}});
+ // A grid of fine luminous floor lines for spatial orientation.
+ const grid=$('#floorGrid');if(grid){for(let i=-10;i<=10;i++){const a=document.createElement('a-entity');a.setAttribute('line',{start:`${i} 0  -10`,end:`${i} 0 10`,color:'#0b4967',opacity:.35});grid.appendChild(a);const b=document.createElement('a-entity');b.setAttribute('line',{start:`-10 0 ${i}`,end:`10 0 ${i}`,color:'#0b4967',opacity:.35});grid.appendChild(b);}}
+}
+$('#vrScene').addEventListener('enter-vr',()=>toast('Modo visor activado.'));$('#vrScene').addEventListener('exit-vr',()=>toast('Has salido del modo visor.'));
+function renderAnnotations(){
+ const id=state.activeId;const items=state.annotations[id]||[];$('#annotationCount').textContent=items.length;const list=$('#annotationList');list.replaceChildren();
+ if(!items.length){const e=document.createElement('div');e.className='empty-state';e.textContent='Aún no hay puntos de interés.';list.append(e);return;}
+ items.forEach((a,i)=>{const row=document.createElement('div');row.className='annotation-item';const p=document.createElement('p');const b=document.createElement('strong');b.textContent=`PUNTO ${i+1} · `;p.append(b,document.createTextNode(a.text));const del=document.createElement('button');del.textContent='×';del.setAttribute('aria-label','Eliminar punto '+(i+1));del.addEventListener('click',()=>{state.annotations[id].splice(i,1);renderAnnotations();});row.append(p,del);list.append(row);});
+ saveMeta();
+}
+$('#pinModeBtn').addEventListener('click',()=>{state.pinMode=!state.pinMode;$('#pinModeBtn').textContent='＋ Fijar punto: '+(state.pinMode?'ACTIVO':'desactivado');$('#pinModeBtn').classList.toggle('orange',state.pinMode);$('#pinStatus').textContent=state.pinMode?'Modo activo: pulsa el modelo para guardar el punto de interés. La posición se registra como referencia de cámara, no como coordenada de superficie exacta.':'Modo de fijación desactivado.';toast(state.pinMode?'Modo de fijación activado.':'Modo de fijación desactivado.');});
+viewer.addEventListener('click',e=>{if(!state.pinMode)return;const text=$('#annotationText').value.trim();if(!text){toast('Escribe el texto del punto antes de fijarlo.','error');return;}const orbit=viewer.getCameraOrbit?.();const target=viewer.getCameraTarget?.();const list=state.annotations[state.activeId]||(state.annotations[state.activeId]=[]);list.push({text,orbit:orbit?{theta:orbit.theta,phi:orbit.phi,radius:orbit.radius}:null,target:target?{x:target.x,y:target.y,z:target.z}:null,position:null});state.pinMode=false;$('#pinModeBtn').textContent='＋ Fijar punto: desactivado';$('#pinStatus').textContent='Punto guardado como referencia de vista. La ubicación exacta sobre la malla requiere raycasting, no expuesto por model-viewer.';renderAnnotations();toast('Punto de interés guardado.');});
+$('#clearPointsBtn').addEventListener('click',()=>{state.annotations[state.activeId]=[];renderAnnotations();toast('Anotaciones del modelo actual eliminadas.');});
+$('#saveAttributionBtn').addEventListener('click',()=>{const m=activeModel();if(!m)return;state.attribution[m.id]={author:$('#attrAuthor').value.trim(),license:$('#attrLicense').value,url:$('#attrUrl').value.trim()};saveMeta();toast('Atribución guardada en este navegador.');});
+$$('[data-tab]').forEach(b=>b.addEventListener('click',()=>{$$('[data-tab]').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-selected',String(x===b));});$$('.tab-content').forEach(x=>x.classList.toggle('active',x.id==='tab-'+b.dataset.tab));}));
+function updateProgress(){const done=$$('.mission-check').filter(c=>c.checked).length;$('#progressText').textContent=done+' / 4';$('#progressFill').style.width=(done/4*100)+'%';state.mission=$$('.mission-check').map(c=>c.checked);saveMeta();}
+$$('.mission-check').forEach((c,i)=>{c.checked=!!state.mission[i];c.addEventListener('change',updateProgress);});
+if(savedMeta.activity){$('#activityTitle').value=savedMeta.activity.title||'';if(savedMeta.activity.subject)$('#subject').value=savedMeta.activity.subject;if(savedMeta.activity.level)$('#level').value=savedMeta.activity.level;$('#objective').value=savedMeta.activity.objective||'';}
+['#activityTitle','#subject','#level','#objective'].forEach(selector=>{$(selector).addEventListener('input',saveMeta);$(selector).addEventListener('change',saveMeta);});
+function activityData(){return {title:$('#activityTitle').value.trim()||'Experiencia XR',subject:$('#subject').value,level:$('#level').value,objective:$('#objective').value.trim(),model:activeModel()?.name||'Sin modelo',completed:state.mission.filter(Boolean).length};}
+$('#challengeBtn').addEventListener('click',()=>{const d=activityData();const challenge=`RETO DE INVESTIGACIÓN · ${d.subject}\n\nObserva “${d.model}” desde al menos tres ángulos. Identifica dos características visibles, explica cómo se relacionan con un concepto de ${d.subject.toLowerCase()} y propone una situación nueva en la que ese conocimiento sería útil.\n\nEvidencia: una descripción, una explicación fundamentada y una aplicación. Criterio de logro: la explicación conecta una observación concreta con el objetivo de aprendizaje.`;const out=$('#challengeOutput');out.textContent=challenge;out.classList.remove('hidden');toast('Reto de investigación generado.');});
+$('#downloadSheetBtn').addEventListener('click',()=>{const d=activityData();const annotations=state.annotations[state.activeId]||[];const attr=state.attribution[state.activeId]||{};const content=`NEXO XR LAB — FICHA DE EXPERIENCIA\n\nTítulo: ${d.title}\nModelo: ${d.model}\nÁrea: ${d.subject}\nNivel: ${d.level}\nObjetivo de aprendizaje: ${d.objective}\nProgreso de misión: ${d.completed}/4 etapas completadas\n\nMISIÓN XR: MIRAR COMO INVESTIGADOR\n1. OBSERVAR: examinar el modelo desde diferentes ángulos.\n2. SEÑALAR: identificar características relevantes.\n3. EXPLICAR: relacionar las características con conceptos académicos.\n4. TRANSFERIR: aplicar lo aprendido a una situación nueva.\n\nPUNTOS DE INTERÉS\n${annotations.length?annotations.map((a,i)=>`${i+1}. ${a.text}`).join('\n'):'No se han creado anotaciones.'}\n\nATRIBUCIÓN\nAutor: ${attr.author||'No especificado'}\nLicencia: ${attr.license||'No especificada'}\nURL de origen: ${attr.url||'No especificada'}\n\nPrincipio: La tecnología inmersiva tiene sentido cuando permite observar, comprender, explicar y aplicar conocimientos que serían difíciles de explorar por otros medios.`;downloadText(content,'ficha-nexo-xr-lab.txt','text/plain;charset=utf-8');toast('Ficha descargada.');});
+function downloadText(text,name,type){const blob=new Blob([text],{type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+function generatePrompt(){
+ const d=activityData();const support=$('#supportType').value;const mins=$('#duration').value;const notes=(state.annotations[state.activeId]||[]).map((a,i)=>`${i+1}. ${a.text}`).join('\n')||'No hay puntos de interés definidos.';
+ const approaches={
+ 'Secuencia antes-durante-después':'Diseña una secuencia de aprendizaje en tres momentos: antes (activar saberes previos y formular predicciones), durante (observación guiada y registro de evidencias) y después (explicación, síntesis y transferencia).',
+ 'Preguntas socráticas':'Propón preguntas abiertas y graduadas que avancen desde la descripción hacia la interpretación, la justificación con evidencias, la evaluación crítica y la transferencia. No entregues las respuestas de inmediato.',
+ 'Rúbrica de desempeño':'Crea una rúbrica analítica de cuatro niveles con criterios observables, descriptores claros y retroalimentación formativa. Incluye observación rigurosa, explicación conceptual, uso de evidencias y transferencia.',
+ 'Adaptaciones basadas en DUA':'Diseña opciones de compromiso, representación y acción/expresión siguiendo el Diseño Universal para el Aprendizaje. Incluye alternativas de bajo ancho de banda, descripción textual y una ruta accesible sin visor.',
+ 'Caso o simulación profesional':'Crea un caso auténtico de contexto profesional con escenario, roles, restricciones, decisiones justificadas, consecuencias posibles y una reflexión final conectada con el objetivo.'
+ };
+ return `Actúa como diseñador/a instruccional experto/a en aprendizaje experiencial, accesibilidad y tecnologías inmersivas.\n\nDISEÑO DE LA EXPERIENCIA\n- Título: ${d.title}\n- Modelo 3D: ${d.model}\n- Área: ${d.subject}\n- Nivel: ${d.level}\n- Duración total: ${mins} minutos\n- Objetivo de aprendizaje: ${d.objective||'Propón un objetivo medible alineado con el área y nivel.'}\n- Puntos de interés del docente:\n${notes}\n\nENCARGO PEDAGÓGICO\n${approaches[support]}\n\nOrganiza la propuesta en pasos con tiempos que sumen exactamente ${mins} minutos. Incluye instrucciones concretas para docente y estudiantes, preguntas para activar observación, evidencias de aprendizaje, criterios de éxito y una breve evaluación formativa. Relaciona cada actividad con el modelo, pero no asumas detalles anatómicos, históricos o científicos que no sean visibles o estén verificados.\n\nACCESIBILIDAD Y ALTERNATIVAS\nOfrece una alternativa equivalente para quien no disponga de RA/RV, no pueda usar gestos o requiera una descripción verbal. No confundas el efecto visual con el aprendizaje: explica qué conocimiento debe permanecer aunque desaparezca la tecnología.\n\nCierra con una pregunta de transferencia y una sugerencia para adaptar la actividad al contexto real del grupo. Usa lenguaje claro, inclusivo y apropiado para ${d.level}.`;
+}
+$('#generatePromptBtn').addEventListener('click',()=>{$('#promptOutput').value=generatePrompt();toast('Prompt didáctico listo.');});
+$('#copyPromptBtn').addEventListener('click',async()=>{const t=$('#promptOutput').value;if(!t)return toast('Primero crea un prompt didáctico.','error');try{await navigator.clipboard.writeText(t);toast('Prompt copiado al portapapeles.');}catch{ $('#promptOutput').select();try{document.execCommand('copy');toast('Prompt copiado.');}catch{toast('No se pudo copiar automáticamente; selecciona el texto y cópialo.','error');}}});
+function speak(text){if(!('speechSynthesis'in window)||!('SpeechSynthesisUtterance'in window)){toast('Este navegador no dispone de síntesis de voz.','error');return;}window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang='es-CO';u.rate=.94;u.pitch=1;u.onerror=()=>toast('La narración no pudo reproducirse.','error');window.speechSynthesis.speak(u);}
+$('#speakBtn').addEventListener('click',()=>{const d=activityData();speak(`${d.title}. Misión XR: mirar como investigador. Objetivo de aprendizaje: ${d.objective}. Primera etapa, observar: examina el modelo desde diferentes ángulos. Segunda, señalar: identifica características relevantes. Tercera, explicar: relaciona las características con conceptos académicos. Cuarta, transferir: aplica lo aprendido a una situación nueva.`);});
+$('#listenPromptBtn').addEventListener('click',()=>{if(!$('#promptOutput').value)$('#promptOutput').value=generatePrompt();speak($('#promptOutput').value);});
+function diag(){
+ const secure=window.isSecureContext;const embedded=window.self!==window.top;const ar=!!(viewer.canActivateAR&&viewer.canActivateAR);const xr=!!navigator.xr;const m=activeModel();
+ const rows=[
+ ['Conexión segura HTTPS',secure?'Disponible':'No detectada · RA/WebXR puede requerir HTTPS'],
+ ['Página incrustada',embedded?'Sí · permisos XR pueden estar restringidos':'No detectada'],
+ ['Realidad aumentada',ar?'model-viewer informa que puede activarse':'No confirmada · depende del dispositivo y del modo AR'],
+ ['WebXR / realidad virtual',xr?'navigator.xr disponible':'API WebXR no detectada en este navegador'],
+ ['Modelo seleccionado',m?m.name+' · '+(m.kind==='local'?'archivo local':'remoto'):'Ningún modelo'],
+ ['Navegador / sistema',navigator.userAgent]
+ ];
+ const list=$('#diagnosticList');list.replaceChildren();rows.forEach(([a,b])=>{const row=document.createElement('div');row.className='diag-item';const left=document.createElement('strong');left.textContent=a;const right=document.createElement('span');right.textContent=b;row.append(left,right);list.append(row);});
+ $('#headerAR').innerHTML='<i style="background:'+(ar?'#42e6b4':'#ffb86b')+';box-shadow:0 0 9px '+(ar?'#42e6b4':'#ffb86b')+'"></i>RA '+(ar?'DISPONIBLE':'SEGÚN DISPOSITIVO');
+ $('#headerVR').innerHTML='<i style="background:'+(xr?'#42e6b4':'#ffb86b')+';box-shadow:0 0 9px '+(xr?'#42e6b4':'#ffb86b')+'"></i>RV '+(xr?'WEBXR':'ALTERNATIVA 3D');
+}
+$('#diagnosticBtn').addEventListener('click',()=>{$('#diagnosticModal').classList.remove('hidden');diag();});
+$('#refreshDiagBtn').addEventListener('click',diag);
+$('#helpBtn').addEventListener('click',()=>$('#helpModal').classList.remove('hidden'));
+$$('[data-close]').forEach(b=>b.addEventListener('click',()=>$('#'+b.dataset.close).classList.add('hidden')));
+$('#exploreFirstBtn').addEventListener('click',()=>{$('#welcomeModal').classList.add('hidden');toast('Explora libremente. La misión te espera en el panel didáctico.');});
+$('#startModelBtn').addEventListener('click',()=>{$('#welcomeModal').classList.add('hidden');selectModel(state.activeId);});
+$$('.modal-backdrop').forEach(back=>back.addEventListener('click',e=>{if(e.target===back&&back.id!=='welcomeModal')back.classList.add('hidden');}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){$$('.modal-backdrop').forEach(m=>{if(m.id!=='welcomeModal')m.classList.add('hidden');});}});
+window.addEventListener('beforeunload',()=>{state.models.filter(m=>m.ownedUrl).forEach(m=>URL.revokeObjectURL(m.src));if('speechSynthesis'in window)window.speechSynthesis.cancel();});
+renderModels();setViewerSource(activeModel());updateProgress();diag();restoreLocalModels();
+})();
+</script>
+</body>
+</html>

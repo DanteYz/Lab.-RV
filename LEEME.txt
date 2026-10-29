@@ -1,0 +1,10 @@
+NEXO XR LAB - ENTREGA WEB
+
+Contenido:
+- index.html: sitio web actualizado.
+- nexo-xr-hero.png: imagen principal usada por el sitio.
+
+IMPORTANTE:
+Mantén ambos archivos en la misma carpeta. Para publicar en Vercel, sube esta carpeta al repositorio conservando los nombres y la estructura. El index.html carga librerías externas desde internet y varios modelos GLB desde sus repositorios de origen, por lo que se necesita conexión.
+
+La aplicación conserva el almacenamiento local del navegador para modelos importados y progreso. No existe sincronización entre dispositivos.
